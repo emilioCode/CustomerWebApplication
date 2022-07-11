@@ -1,0 +1,91 @@
+
+<div class="container">
+    <button type="button" class="btn btn-primary btn-block" style="display: block; width: 100%;" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="fillModal('create', {})">Add new customer</button>
+    <br />
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="customers$ | async as customers">
+      <tr *ngFor="let customer of customers.data; index as i ">   
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ customer.Name }}</td>
+            <td>{{ customer.Phone }}</td>
+            <td>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="fillModal('edit', customer)">Edit</button>&nbsp;
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="fillModal('delete', customer)">Delete</button>
+            </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ modal_title }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Example label</label>
+                  <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" formControlName="Name">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Another label</label>
+                  <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Phone" formControlName="Phone">
+                </div>
+                <div class="form-group">
+                    <label for="formGroupExampleInput2">Another label</label>
+                    <select class="custom-select" placeholder="Gender" formControlName="Gender" class="form-control">
+                        <option selected value="">Gender</option>
+                        <option *ngFor="let gender of genders" value="{{gender}}">{{ gender }}</option>
+                      </select>
+                </div>
+                  <br/>
+                <div class="form-group">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+                  <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+             </form>
+ 
+
+   
+        </div>
+      </div>
+    </div>
+  </div>

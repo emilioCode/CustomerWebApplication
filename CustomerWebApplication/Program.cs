@@ -22,6 +22,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors(options =>
+{
+    options.WithOrigins("https://localhost:44462");
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 
 app.MapControllerRoute(
     name: "default",
