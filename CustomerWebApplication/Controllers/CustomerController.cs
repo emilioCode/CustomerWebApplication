@@ -68,6 +68,8 @@ namespace CustomerWebApplication.Controllers
 
                     case CONSTANT.DELETE:
                         customer = await _context.Customers.FindAsync(customerParsed.Id);
+                        List<Address> addressesToRemove = _context.Addresses.Where(x => x.Customerid == customer.Id).ToList();
+                        _context.Addresses.RemoveRange(addressesToRemove);
                         _context.Entry(customer).State = EntityState.Deleted;
                         response.message = "deleted: done";
                         break;

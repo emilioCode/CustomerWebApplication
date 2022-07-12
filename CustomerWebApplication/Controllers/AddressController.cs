@@ -26,7 +26,7 @@ namespace CustomerWebApplication.Controllers
             List<Address> addresses = new();
             try
             {
-                addresses = await _context.Addresses.Where(x=>x.).ToListAsync();
+                addresses = await _context.Addresses.Where(x=>x.Customerid == id).ToListAsync();
                 response.success = true;
             }
             catch (Exception ex)

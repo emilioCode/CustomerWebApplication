@@ -58,28 +58,58 @@
                     <table class="table">
                         <thead>
                           <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th>Type</th>
+                            <th>Address</th>
+                            <th>Actions  <a class="btn btn-link" (click)="fillModal2('create',{})" [hidden]="option2 == 'create' || option2 == 'edit' || option2 == 'delete' || option == 'create'">Add</a></th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
+                        <tbody >
+                          <tr [hidden]="option2 != 'create'">
+                            <td>
+                              <input type="text" placeholder="Type*" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.Type0"/>
+                            </td>
+                            <td>
+                              <input type="text" placeholder="Address*" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.Address0"/>
+                            </td>
+                             <td>
+                              <button  type="button" class="btn btn-primary" (click)="submitAddress()" [disabled]="address.Type0 =='' || address.Address0 ==''">Save</button>&nbsp;
+                              <button type="button" class="btn btn-danger"  (click)="option2 = ''">Cancel</button>
+                             </td>
+                           </tr>
+                        <ng-container *ngIf="addresses$ | async as addresses">
+                          <tr *ngFor="let e of addresses.data" >  
+                            <ng-container *ngIf="e.Id == address.Id">
+                              <td>
+                                <input type="text" placeholder="Type*" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.Type0"/>
+                              </td>
+                              <td>
+                                <input type="text" placeholder="Address*" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.Address0"/>
+                              </td>
+                               <td>
+                                <button  type="button" class="btn btn-primary" (click)="submitAddress()" [disabled]="address.Type0 =='' || address.Address0 ==''">Save</button>&nbsp;
+                                <button type="button" class="btn btn-danger"  (click)="resetAddress()">Cancel</button>
+                               </td>
+                            </ng-container>
+                            <ng-container *ngIf="e.Id != address.Id">
+                              <td>{{e.Type0}}</td>
+                              <td>{{e.Address0}}</td>
+                              <td>
+                                <div [hidden]="option2 != ''">
+                                  <a class="btn btn-success" (click)="fillModal2('edit', e)">Edit</a>&nbsp;
+                                  <a class="btn btn-danger" (click)="fillModal2('delete', e)">Cancel</a>
+                                </div>
+
+                              </td>
+                            </ng-container>
                           </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                          </tr>
+                        </ng-container>
+  
                         </tbody>
                       </table>
                 </div>
                   <div class="modal-footer">
                       <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                   </div>
              </form>
  

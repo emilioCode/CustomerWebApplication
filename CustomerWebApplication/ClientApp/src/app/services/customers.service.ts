@@ -7,7 +7,9 @@ import { NameValue } from '../interfaces';
   providedIn: 'root'
 })
 export class CustomersService {
-  // private variables: NameValue[] = [];
+  public customer_service = "https://localhost:7189/api/Customer";
+  public address_service = "https://localhost:7189/api/Address";
+  
   constructor(private http: HttpClient) { 
     console.log("CustomersService works!")
     this.get();
@@ -16,11 +18,11 @@ export class CustomersService {
   }
 
   get =():Observable<any>  => {
-    return this.http.get("https://localhost:7189/api/Customer");
+    return this.http.get(this.customer_service);
   }
 
-  gerAddresses = (id:number)=>{
-    return this.http.get("https://localhost:7189/api/Adress/"+id);
+  getAddresses = (id:number)=>{
+    return this.http.get(this.address_service + "/" + id);
   }
 
 }

@@ -25,6 +25,14 @@ export class CustomerComponent implements OnInit {
   modal_title:string = "";
   form: FormGroup;
   headers = new HttpHeaders().set("content-type", "application/json");
+  option2:string = '';
+  address: any= {
+    Id: 0,
+    Address0: "",
+    Type0: "",
+    Customerid: 0
+  }
+
   ngOnInit(): void {
     this.customers$ = this.customerService.get();
 
@@ -33,13 +41,14 @@ export class CustomerComponent implements OnInit {
   genders: string[] = [
     'M',
     'F'
-  ]
+  ];
+
   fillModal(option='create',object: any){
     this.option = option;
     switch (option) {
       case 'create':
         this.costumer = {
-          Id: null,
+          Id: 0,
           Name: "",
           Phone: "",
           Gender: "M"
@@ -72,7 +81,26 @@ export class CustomerComponent implements OnInit {
       default:
         break;
     }
-    
+    this.addresses$ = this.customerService.getAddresses(this.costumer.Id);
+  }
+
+  fillModal2(option='create', object: any){
+    this.option2 = option;
+    const { Id } = this.form.controls;
+    switch (option) {
+      case 'create':
+        this.initAddress();
+        break;
+      case 'edit':
+        this.address = object;
+        break;
+      case 'delete':
+        this.address = object;
+        break;
+      default:
+        break;
+    }
+    console.log(this.address)
   }
 
   submit(){
@@ -87,11 +115,44 @@ export class CustomerComponent implements OnInit {
       stringify: JSON.stringify(customer)
     }
 
-    this.http.post("https://localhost:7189/api/Customer",request,{headers:this.headers,responseType:'json'})
+    this.http.post(this.customerService.customer_service,request,{headers:this.headers,responseType:'json'})
       .subscribe(res=>{
+        document.getElementById('btnClose')?.click();
         this.customers$ = this.customerService.get();
       },error => {
         console.error(error);
       });
+  }
+
+  submitAddress(){
+    const request = {
+      operation: this.option2,
+      stringify: JSON.stringify(this.address)
+    }
+    console.log(request)
+    this.http.post(this.customerService.address_service,request,{headers:this.headers,responseType:'json'})
+    .subscribe(res=>{
+      console.log(res);
+      this.addresses$ = this.customerService.getAddresses(this.address.Customerid);
+      this.resetAddress()
+
+    },error => {
+      console.error(error);
+    });
+
+  }
+
+  initAddress(){
+    this.address = {
+      Id: 0,
+      Address0: "",
+      Type0: "",
+      Customerid: 0
+    }
+  }
+
+  resetAddress(){
+    this.option2 = '';
+    this.initAddress();
   }
 }
