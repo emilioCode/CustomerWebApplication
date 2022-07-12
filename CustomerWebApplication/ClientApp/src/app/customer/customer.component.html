@@ -86,8 +86,8 @@
                                 <input type="text" placeholder="Address*" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.Address0"/>
                               </td>
                                <td>
-                                <button  type="button" class="btn btn-primary" (click)="submitAddress()" [disabled]="address.Type0 =='' || address.Address0 ==''">Save</button>&nbsp;
-                                <button type="button" class="btn btn-danger"  (click)="resetAddress()">Cancel</button>
+                                <button  type="button" class="btn btn-link" (click)="submitAddress()" [disabled]="address.Type0 =='' || address.Address0 ==''"><span [hidden]="option2 == 'delete'">Save</span><span [hidden]="option2 != 'delete'">I'm Sure, delete</span></button>&nbsp;
+                                <button type="button" class="btn btn-link"  (click)="resetAddress()">Cancel</button>
                                </td>
                             </ng-container>
                             <ng-container *ngIf="e.Id != address.Id">
@@ -95,8 +95,8 @@
                               <td>{{e.Address0}}</td>
                               <td>
                                 <div [hidden]="option2 != ''">
-                                  <a class="btn btn-success" (click)="fillModal2('edit', e)">Edit</a>&nbsp;
-                                  <a class="btn btn-danger" (click)="fillModal2('delete', e)">Cancel</a>
+                                  <a class="btn btn-link" (click)="fillModal2('edit', e)">Edit</a>&nbsp;
+                                  <a class="btn btn-link" (click)="fillModal2('delete', e)">Delete</a>
                                 </div>
 
                               </td>
