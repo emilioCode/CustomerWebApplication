@@ -1,16 +1,22 @@
 using CustomerWebApplication.Models;
 using CustomerWebApplication.Utils;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ConnectionStrings.SQLServer = builder.Configuration.GetConnectionString("SQLServer");
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 // Add services to the container.
 
 builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddScoped<DBCustomerContext, DBCustomerContext>();
 
 var app = builder.Build();
-
+app.UseForwardedHeaders();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
